@@ -14,7 +14,7 @@ const app = express()
 app.use(
   cors({
     credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000",
+    origin: process.env.REACT_APP_REMOTE_SERVER || "http://localhost:3000",
   })
 )
 
