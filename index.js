@@ -8,6 +8,12 @@ import EnrollmentRoutes from "./Kanbas/Enrollments/routes.js"
 import ModuleRoutes from "./Kanbas/Modules/routes.js"
 import cors from "cors"
 import session from "express-session"
+import mongoose from "mongoose";
+import AssignmentRoutes from "./Kanbas/Assignment/routes.js";
+import QuizRoutes from "./Kanbas/Quizzes/routes.js";
+
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas-cs5610-fa24";
+mongoose.connect(CONNECTION_STRING);
 
 const app = express()
 
@@ -41,6 +47,7 @@ UserRoutes(app)
 CourseRoutes(app)
 EnrollmentRoutes(app)
 ModuleRoutes(app)
-
+AssignmentRoutes(app)
+QuizRoutes(app)
 
 app.listen(process.env.PORT || 4000)

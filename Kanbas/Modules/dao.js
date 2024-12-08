@@ -1,24 +1,42 @@
-import Database from "../Database/index.js";
+import ModuleModel from "./model.js";
 
-export function updateModule(moduleId, moduleUpdates) {
+export async function updateModule(moduleId, moduleUpdates) {
+    try {
+        return await ModuleModel.findByIdAndUpdate(
+            moduleId,
+            moduleUpdates,
+            {new: true}
+        );
+    } catch (error) {
+        console.error("Error updating module:", error);
+        throw error;
+    }
+}
+
+export async function deleteModule(moduleId) {
+    return ModuleModel.deleteOne({ _id: moduleId });
+}
+
+export async function createModule(module) {
+    try {
+        const newModule = new ModuleModel(module);
+        return await newModule.save();
+    } catch (error) {
+        console.error("Error creating module:", error);
+        throw error;
+    }
+}
+
+export async function findModulesForCourse(courseId) {
+    try {
+        return await ModuleModel.find({course: courseId});
+    } catch (error) {
+        console.error("Error finding modules for course:", error);
+        throw error;
+    }
+}
+
+export function findModulesForCourse1(courseId) {
     const { modules } = Database;
-    const module = modules.find((module) => module._id === moduleId);
-    Object.assign(module, moduleUpdates);
-    return module;
-}  
-
-export function deleteModule(moduleId) {
-    const { modules } = Database;
-    Database.modules = modules.filter((module) => module._id !== moduleId);
-}   
-
-export function createModule(module) {
-    const newModule = { ...module, _id: Date.now().toString() };
-    Database.modules = [...Database.modules, newModule];
-    return newModule;
-}  
-
-export function findModulesForCourse(courseId) {
-  const { modules } = Database;
-  return modules.filter((module) => module.course === courseId);
+    return modules.filter((module) => module.course === courseId);
 }
